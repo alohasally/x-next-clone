@@ -31,7 +31,7 @@ export default function RootLayout({ children }) {
             <div className="hidden sm:inline border-r h-screen">
               <Sidebar />
             </div>
-            <div>{children}</div>
+            <div className="max-x-2xl flex-1">{children}</div>
             <div className="lg:flex-col p-3 h-screen border-l hidden lg:flex w-[24rem] gap-4">
               <div className="sticky top-0 bg-white ">
                 <input

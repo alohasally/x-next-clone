@@ -43,7 +43,7 @@ export default function Sidebar() {
         </div>
       </div>
       {session && (
-        <div className="flex items-center gap-2 xl:hover:bg-gray-100">
+        <div className="flex items-center gap-2 xl:hover:bg-gray-100 transition duration-200">
           <img
             className="rounded-full aspect-square w-12 ml-2"
             src={session.user.image}
