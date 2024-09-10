@@ -32,7 +32,7 @@ function Post({ post, id }) {
             className="max-w-[500px] object-cover w-full max-h-full mb-4 rounded-xl"
           />
         </Link>
-        <Icons />
+        <Icons id={id} />
       </div>
     </div>
   );
