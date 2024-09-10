@@ -20,7 +20,7 @@ import {
 } from "react-icons/hi";
 import { useEffect, useState } from "react";
 
-function Icons({ id }) {
+function Icons({ id, uid }) {
   const { data: session } = useSession();
   const db = getFirestore(app);
   const [isLiked, setIsLiked] = useState(false);
@@ -53,6 +53,23 @@ function Icons({ id }) {
     );
   }, [likes]);
 
+  const handleDeletePost = async () => {
+    if (window.confirm("Are you sure you want to delete this post?")) {
+      if (session?.user?.uid === uid) {
+        deleteDoc(doc(db, "posts", id))
+          .then(() => {
+            console.log("Document successfully deleted!");
+            location.reload();
+          })
+          .catch((error) => {
+            console.error("Error removing document : ", error);
+          });
+      } else {
+        alert("You are not allowed to delete this post");
+      }
+    }
+  };
+
   return (
     <div className="flex items-center space-x-4 text-gray-500">
       <div className="flex items-center gap-1">
@@ -76,7 +93,12 @@ function Icons({ id }) {
           {likes.length > 0 && likes.length}
         </span>
       </div>
-      <HiOutlineTrash className="h-8 w-8 rounded-full transition duration-500 ease-in-out p-2 hover:text-red-500 hover:bg-red-100 cursor-pointer" />
+      {session?.user?.uid === uid && (
+        <HiOutlineTrash
+          onClick={handleDeletePost}
+          className="h-8 w-8 rounded-full transition duration-500 ease-in-out p-2 hover:text-red-500 hover:bg-red-100 cursor-pointer"
+        />
+      )}
     </div>
   );
 }
