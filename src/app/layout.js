@@ -3,6 +3,7 @@ import "./globals.css";
 import Sidebar from "../components/Sidebar";
 import News from "../components/News";
 import { SessionWrapper } from "../components/SessionWrapper";
+import CommentModal from "../components/CommentModal";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -25,22 +26,25 @@ export default function RootLayout({ children }) {
     <SessionWrapper>
       <html lang="en">
         <body
-          className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+          className={`${geistSans.variable} ${geistMono.variable} antialiased `}
         >
-          <div className="flex justify-between max-w-6xl mx-auto ">
-            <div className="hidden sm:inline border-r h-screen sticky top-0">
-              <Sidebar />
-            </div>
-            <div className="max-x-2xl flex-1">{children}</div>
-            <div className="lg:flex-col p-3 h-screen border-l hidden lg:flex w-[24rem] gap-4">
-              <div className="sticky top-0 bg-white ">
-                <input
-                  type="text"
-                  placeholder="Search news..."
-                  className="bg-gray-100 rounded-3xl w-full px-4 py-2 border border-gray-300"
-                />
+          <div className="relative w-full h-full">
+            <CommentModal className="absolute z-100 top-1/2 left-1/2 -translate-x-1/2" />
+            <div className="flex justify-between max-w-6xl mx-auto">
+              <div className="hidden sm:inline border-r h-screen sticky top-0">
+                <Sidebar />
               </div>
-              <News />
+              <div className="max-x-2xl flex-1">{children}</div>
+              <div className="lg:flex-col p-3 h-screen border-l hidden lg:flex w-[24rem] gap-4">
+                <div className="sticky top-0 bg-white ">
+                  <input
+                    type="text"
+                    placeholder="Search news..."
+                    className="bg-gray-100 rounded-3xl w-full px-4 py-2 border border-gray-300"
+                  />
+                </div>
+                <News />
+              </div>
             </div>
           </div>
         </body>

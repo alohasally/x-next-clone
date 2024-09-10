@@ -19,12 +19,15 @@ import {
   HiOutlineTrash,
 } from "react-icons/hi";
 import { useEffect, useState } from "react";
+import { useRecoilState } from "recoil";
+import { modalState } from "../atom/modalAtom";
 
 function Icons({ id, uid }) {
   const { data: session } = useSession();
   const db = getFirestore(app);
   const [isLiked, setIsLiked] = useState(false);
   const [likes, setLikes] = useState([]);
+  const [open, setOpen] = useRecoilState(modalState);
 
   const handleLike = async () => {
     if (session) {
@@ -70,10 +73,19 @@ function Icons({ id, uid }) {
     }
   };
 
+  console.log("session", session, uid);
+
+  const handleOpenModal = () => {
+    setOpen(!open);
+  };
+
   return (
     <div className="flex items-center space-x-4 text-gray-500">
       <div className="flex items-center gap-1">
-        <HiOutlineChat className="h-8 w-8 rounded-full transition duration-500 ease-in-out p-2 hover:text-sky-500 hover:bg-sky-100 cursor-pointer" />
+        <HiOutlineChat
+          onClick={handleOpenModal}
+          className="h-8 w-8 rounded-full transition duration-500 ease-in-out p-2 hover:text-sky-500 hover:bg-sky-100 cursor-pointer"
+        />
         <span className={`${isLiked ? "text-blue-500" : ""} text-xs`}>1</span>
       </div>
       <div className="flex items-center gap-1">

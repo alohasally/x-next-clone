@@ -4,6 +4,7 @@ import { BsThreeDots } from "react-icons/bs";
 import Icons from "./Icons";
 
 function Post({ post, id }) {
+  console.log("uid", post.data.uid);
   return (
     <div className="flex py-4 px-2 border-b border-gray-200 hover:bg-gray-200">
       <img
@@ -32,7 +33,7 @@ function Post({ post, id }) {
             className="max-w-[500px] object-cover w-full max-h-full mb-4 rounded-xl"
           />
         </Link>
-        <Icons id={id} uid={post.uid} />
+        <Icons id={id} uid={post.data.uid} />
       </div>
     </div>
   );
