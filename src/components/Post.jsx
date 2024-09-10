@@ -1,10 +1,11 @@
 import Link from "next/link";
 import React from "react";
-import { BsBalloon, BsHeart, BsThreeDots, BsTrash } from "react-icons/bs";
+import { BsThreeDots } from "react-icons/bs";
+import Icons from "./Icons";
 
 function Post({ post, id }) {
   return (
-    <div className="flex py-4 px-2 border-b border-gray-200">
+    <div className="flex py-4 px-2 border-b border-gray-200 hover:bg-gray-200">
       <img
         src={post?.data.profileimg}
         alt="user-img"
@@ -28,20 +29,10 @@ function Post({ post, id }) {
         <Link href={`/posts/${id}`}>
           <img
             src={post.data.image}
-            className="max-w-[500px] object-cover w-full max-h-[400px] mb-4"
+            className="max-w-[500px] object-cover w-full max-h-full mb-4 rounded-xl"
           />
         </Link>
-        <div className="flex items-center space-x-4">
-          <div className="flex items-center gap-2">
-            <BsBalloon className="cursor-pointer" />
-            <span>1</span>
-          </div>
-          <div className="flex items-center gap-2">
-            <BsHeart className="cursor-pointer" />
-            <span>1</span>
-          </div>
-          <BsTrash className="cursor-pointer" />
-        </div>
+        <Icons />
       </div>
     </div>
   );
