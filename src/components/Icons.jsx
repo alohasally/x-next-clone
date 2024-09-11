@@ -20,7 +20,7 @@ import {
 } from "react-icons/hi";
 import { useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
-import { modalState } from "../atom/modalAtom";
+import { modalState, postIdState } from "../atom/modalAtom";
 
 function Icons({ id, uid }) {
   const { data: session } = useSession();
@@ -28,6 +28,7 @@ function Icons({ id, uid }) {
   const [isLiked, setIsLiked] = useState(false);
   const [likes, setLikes] = useState([]);
   const [open, setOpen] = useRecoilState(modalState);
+  const [postId, setPostId] = useRecoilState(postIdState);
 
   const handleLike = async () => {
     if (session) {
@@ -83,7 +84,14 @@ function Icons({ id, uid }) {
     <div className="flex items-center space-x-4 text-gray-500">
       <div className="flex items-center gap-1">
         <HiOutlineChat
-          onClick={handleOpenModal}
+          onClick={() => {
+            if (!session) {
+              signIn();
+            } else {
+              setOpen(!open);
+              setPostId(id);
+            }
+          }}
           className="h-8 w-8 rounded-full transition duration-500 ease-in-out p-2 hover:text-sky-500 hover:bg-sky-100 cursor-pointer"
         />
         <span className={`${isLiked ? "text-blue-500" : ""} text-xs`}>1</span>
