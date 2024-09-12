@@ -27,6 +27,7 @@ function Icons({ id, uid }) {
   const db = getFirestore(app);
   const [isLiked, setIsLiked] = useState(false);
   const [likes, setLikes] = useState([]);
+  const [comments, setComments] = useState([]);
   const [open, setOpen] = useRecoilState(modalState);
   const [postId, setPostId] = useRecoilState(postIdState);
 
@@ -76,9 +77,15 @@ function Icons({ id, uid }) {
 
   console.log("session", session, uid);
 
-  const handleOpenModal = () => {
-    setOpen(!open);
-  };
+  useEffect(() => {
+    const unsubsribe = onSnapshot(
+      collection(db, "posts", id, "comments"),
+      (snapshot) => {
+        setComments(snapshot.docs);
+      }
+    );
+    return () => unsubsribe();
+  }, [db, id]);
 
   return (
     <div className="flex items-center space-x-4 text-gray-500">
@@ -94,7 +101,11 @@ function Icons({ id, uid }) {
           }}
           className="h-8 w-8 rounded-full transition duration-500 ease-in-out p-2 hover:text-sky-500 hover:bg-sky-100 cursor-pointer"
         />
-        <span className={`${isLiked ? "text-blue-500" : ""} text-xs`}>1</span>
+        {comments.length > 0 && (
+          <span className={`${comments ? "text-blue-500" : ""} text-xs`}>
+            {comments.length}
+          </span>
+        )}
       </div>
       <div className="flex items-center gap-1">
         {isLiked ? (

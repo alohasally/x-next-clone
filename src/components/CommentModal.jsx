@@ -7,7 +7,15 @@ import { HiX } from "react-icons/hi";
 import { useEffect, useState } from "react";
 const { useSession } = require("next-auth/react");
 import { app } from "../firebase";
-import { doc, getFirestore, onSnapshot } from "firebase/firestore";
+import {
+  addDoc,
+  collection,
+  doc,
+  getFirestore,
+  onSnapshot,
+  serverTimestamp,
+} from "firebase/firestore";
+import { useRouter } from "next/navigation";
 
 export default function CommentModal() {
   const [open, setOpen] = useRecoilState(modalState);
@@ -16,6 +24,7 @@ export default function CommentModal() {
   const [post, setPost] = useState({});
   const { data: session } = useSession();
   const db = getFirestore(app);
+  const router = useRouter();
 
   useEffect(() => {
     if (postId !== "") {
@@ -31,8 +40,22 @@ export default function CommentModal() {
     }
   }, [postId]);
 
-  const sendComment = async () => {};
-  console.log("post", post);
+  const sendComment = async () => {
+    addDoc(collection(db, "posts", postId, "comments"), {
+      name: session.user.name,
+      username: session.user.username,
+      userImg: session.user.image,
+      comment: input,
+      timestamp: serverTimestamp(),
+    })
+      .then(() => {
+        setInput("");
+        setOpen(false);
+        router.push(`/posts/${postId}`);
+      })
+      .catch.error("Error adding document:", error);
+  };
+  console.log(post);
   return (
     <>
       {open && (
@@ -43,7 +66,7 @@ export default function CommentModal() {
           className="max-w-lg w-[90%] absolute left-1/2 -translate-x-1/2 top-1/2 -translate-y-1/2 bg-white border-gray-200 rounded-xl shadow-md"
         >
           <div className="p-4">
-            <div className="border-b border-gray-200 py-2 px-1.5" clas>
+            <div className="border-b border-gray-200 py-2 px-1.5">
               <HiX
                 className="text-2xl text-gray-700 p-1 hover:bg-gray-200 rounded-full cursor-pointer"
                 onClick={() => setOpen(false)}
@@ -52,7 +75,7 @@ export default function CommentModal() {
             <div className="p-2 flex items-center sapce-x-1 relative">
               <span className="w-0.5 h-full z-[-1] absoulte left-8 top-11 bg-gray-300" />
               <img
-                src={post?.profileImg}
+                src={post?.profileimg}
                 alt="user-img"
                 className="h-11 w-11 rounded-full mr-4"
               />
@@ -73,7 +96,8 @@ export default function CommentModal() {
               <div className="w-full divide-y divide-gray-200 ">
                 <div>
                   <textarea
-                    value=""
+                    onChange={(e) => setInput(e.target.value)}
+                    value={input}
                     placeholder="Write a comment..."
                     className="w-full border-none outline-none tracking-wide min-h-[50px] placeholder-gray-400 placeholder:text-xl placeholder:font-semibold"
                   ></textarea>

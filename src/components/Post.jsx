@@ -15,9 +15,7 @@ function Post({ post, id }) {
       <div className="flex-1 flex-col justify-start gap-2">
         <div className="flex justify-between w-full">
           <div className="flex items-center gap-1 whitespace-nowrap">
-            <h4 className="text-sm font-bold truncate ">
-              {post?.data.username}
-            </h4>
+            <h4 className="text-sm font-bold truncate ">{post?.data.name}</h4>
             <h6 className="text-sm font-light truncate">
               @{post.data.username}
             </h6>
