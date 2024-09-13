@@ -32,7 +32,12 @@ export default function Comments({ id }) {
     <div>
       {comments.map((comment) => {
         return (
-          <Comment key={comment.id} comment={comment.data()} id={comment.id} />
+          <Comment
+            key={comment.id}
+            comment={comment.data()}
+            commentId={comment.id}
+            originalPostId={id}
+          />
         );
       })}
     </div>
