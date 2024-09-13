@@ -16,11 +16,12 @@ async function Feed() {
   querySnapshot.forEach((doc) => {
     data.push({ id: doc.id, data: doc.data() });
   });
+  console.log("data1", data);
 
   return (
     <div>
       {data.map((post) => (
-        <Post key={post.id} post={post} id={post.id} />
+        <Post key={post.id} post={post.data} id={post.id} />
       ))}
     </div>
   );
